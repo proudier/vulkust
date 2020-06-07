@@ -7,6 +7,8 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+vulkano = "0.19.0"
+vulkano-glfw-v2 = "0.2.0"
 
 [dependencies.glfw]
 version = "0.37.0"
