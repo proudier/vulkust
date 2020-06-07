@@ -5,15 +5,20 @@ use vulkano::device::Device;
 use vulkano::device::DeviceExtensions;
 use vulkano::device::Features;
 use vulkano::instance::Instance;
-use vulkano::instance::InstanceExtensions;
 use vulkano::instance::PhysicalDevice;
 
 fn main() {
     let mut glfw = glfw::init(glfw::FAIL_ON_ERRORS).expect("Failed to initialize GLFW library.");
 
-    let app_infos = vulkano::app_info_from_cargo_toml!();
-    let instance = Instance::new(Some(&app_infos), &InstanceExtensions::none(), None)
-        .expect("Failed to create Vulkan instance");
+    let extensions: vulkano::instance::RawInstanceExtensions =
+        vulkano_glfw_v2::get_required_raw_instance_extensions(&glfw)
+            .expect("Failed to retrieve Vulkan instance extensions required by GLFW");
+    let instance = Instance::new(
+        Some(&vulkano::app_info_from_cargo_toml!()),
+        extensions,
+        None,
+    )
+    .expect("Failed to create Vulkan instance");
 
     println!("Dumping Vulkan compatible devices:");
     for phy_dev in PhysicalDevice::enumerate(&instance) {
@@ -64,17 +69,19 @@ fn main() {
     };
     let queue = queues.next().unwrap();
 
-
     glfw.window_hint(WindowHint::Resizable(false));
     glfw.window_hint(WindowHint::DoubleBuffer(true));
+    glfw.window_hint(WindowHint::ClientApi(glfw::ClientApiHint::NoApi));
     let (mut window, events) = glfw
         .create_window(1920, 1080, "Vulkust", glfw::WindowMode::Windowed)
         .expect("Failed to create GLFW window.");
+        window.set_key_polling(true);
 
-    window.set_key_polling(true);
-    window.make_current();
+    let surface = vulkano_glfw_v2::create_window_surface(instance, window).unwrap();
 
-    while !window.should_close() {
+    // window.make_current();
+
+    while !surface.window().should_close() {
         glfw.poll_events();
         for (_, event) in glfw::flush_messages(&events) {
             handle_window_event(&mut window, event);

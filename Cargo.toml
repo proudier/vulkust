@@ -3,13 +3,12 @@ name = "vulkust"
 version = "0.1.0"
 authors = ["Pierre Roudier <pierre@roudier.io>"]
 edition = "2018"
+repository = "https://github.com/proudier/vulkust"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-vulkano = "0.19.0"
-vulkano-glfw-v2 = "0.2.0"
-
-[dependencies.glfw]
-version = "0.37.0"
-features = [ "vulkan" ]
+glfw = { version = "^0.37.0", features = [ "vulkan" ] }
+# TODO understand why Cargo doesnt automatically pick the same version of vulkano here and in vulkano-glfw-v2's deps
+vulkano = "^0.18.0" 
+vulkano-glfw-v2 = "^0.2.0"
