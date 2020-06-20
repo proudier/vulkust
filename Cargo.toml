@@ -8,7 +8,7 @@ repository = "https://github.com/proudier/vulkust"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-glfw = { version = "^0.37.0", features = [ "vulkan" ] }
-# TODO understand why Cargo doesnt automatically pick the same version of vulkano here and in vulkano-glfw-v2's deps
-vulkano = "^0.18.0" 
-vulkano-glfw-v2 = "^0.2.0"
+vulkano = "0.19" 
+vulkano-win = "0.19"
+winit = "0.22"
+#winit = { version = "0.22", features = [ "serde" ] }
